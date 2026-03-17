@@ -1,0 +1,79 @@
+<div class="compare-container">
+  <h1>Compare Cities</h1>
+
+  <div class="search-section">
+    <div class="search">
+      <input
+        type="text"
+        [(ngModel)]="cityQuery"
+        (input)="searchCity()"
+        placeholder="Enter city name (e.g., London)"
+        [class.error]="selectedCities().length >= 3"
+      />
+
+      <button (click)="addCity()" [disabled]="selectedCities().length >= 3 || !cityQuery">
+        Add City
+      </button>
+
+      <button *ngIf="selectedCities().length > 0" class="clear-btn" (click)="clearAll()">
+        Clear All
+      </button>
+    </div>
+
+    <ul *ngIf="suggestions().length" class="suggestions">
+      <li *ngFor="let city of suggestions()" (click)="selectCity(city)">
+        {{ city.name }}, {{ city.country }}
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="selectedCities().length > 0" class="selected-cities">
+    <h3>Selected Cities ({{ selectedCities().length }}/3)</h3>
+
+    <div class="city-tags">
+      <div *ngFor="let city of selectedCities()" class="city-tag">
+        <span>{{ city }}</span>
+
+        <button class="remove-btn" (click)="removeCity(city)">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="selectedCities().length > 0" class="city-mini-cards">
+    <div *ngFor="let city of selectedCities()" class="mini-card">
+      <h4>{{ city }}</h4>
+
+      <ng-container *ngIf="getCityData(city) as data">
+        <img
+          [src]="'https://openweathermap.org/img/wn/' + data.icon + '@2x.png'"
+          class="mini-icon"
+        />
+
+        <div class="temp">{{ data.temp }} °C</div>
+
+        <div class="condition">
+          {{ data.condition }}
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <div *ngIf="selectedCities().length > 0" class="chart-container">
+    <h3>Temperature Comparison (5 Day Forecast)</h3>
+
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [xaxis]="chartOptions.xaxis"
+      [stroke]="chartOptions.stroke"
+      [markers]="chartOptions.markers"
+      [title]="chartOptions.title"
+      [colors]="chartOptions.colors"
+    >
+    </apx-chart>
+  </div>
+
+  <div *ngIf="selectedCities().length === 0" class="empty-state">
+    <p>Add up to 3 cities to compare weather forecasts</p>
+  </div>
+</div>

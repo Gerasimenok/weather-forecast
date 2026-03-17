@@ -1,0 +1,252 @@
+<div class="container">
+  <a routerLink="/compare" class="compare-link">{{ 'compare' | translate }}</a>
+
+  <div class="advanced-search">
+    <button class="filter-toggle" (click)="showFilters.set(!showFilters())">
+      {{ showFilters() ? ('hideFilters' | translate) : ('showFilters' | translate) }} 🔍
+    </button>
+
+    <div class="filters-panel" *ngIf="showFilters()">
+      <div class="filter-group">
+        <label>{{ 'country' | translate }}:</label>
+        <input
+          type="text"
+          [(ngModel)]="searchFilters().country"
+          (input)="searchCity()"
+          placeholder="e.g., US, GB, RU"
+        />
+      </div>
+
+      <div class="filter-group">
+        <label>{{ 'region' | translate }}:</label>
+        <select [(ngModel)]="searchFilters().region" (change)="searchCity()">
+          <option value="">{{ 'any' | translate }}</option>
+          <option value="Africa">Africa</option>
+          <option value="Americas">Americas</option>
+          <option value="Asia">Asia</option>
+          <option value="Europe">Europe</option>
+          <option value="Oceania">Oceania</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>{{ 'population' | translate }}:</label>
+        <div class="population-range">
+          <input
+            type="number"
+            [(ngModel)]="searchFilters().minPopulation"
+            (input)="searchCity()"
+            [placeholder]="'min' | translate"
+          />
+          <span>-</span>
+          <input
+            type="number"
+            [(ngModel)]="searchFilters().maxPopulation"
+            (input)="searchCity()"
+            [placeholder]="'max' | translate"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="search">
+    <input
+      type="text"
+      [(ngModel)]="cityQuery"
+      (input)="searchCity()"
+      [placeholder]="'search' | translate"
+    />
+  </div>
+
+  <div *ngIf="suggestions().length > 0" class="suggestions-header">
+    {{ 'foundCities' | translate : { count: suggestions().length } }}
+  </div>
+
+  <ul *ngIf="suggestions().length" class="suggestions">
+    <li
+      *ngFor="let city of suggestions()"
+      (click)="selectCity(city)"
+      [class.major-city]="city.population > 1000000"
+      [class.nearby-city]="isNearbyCity(city)"
+    >
+      <span class="city-name">{{ city.name }}</span>
+      <span class="city-details">
+        <span class="country-name">{{ getCountryFullName(city.country) }}</span>
+        <span class="country-code">{{ city.country }}</span>
+        <span *ngIf="city.population">({{ city.population | number }} pop.)</span>
+      </span>
+    </li>
+  </ul>
+
+  <div *ngIf="cityQuery.length >= 2 && suggestions().length === 0" class="no-results">
+    {{ 'noCitiesFound' | translate }}
+  </div>
+
+  <div class="history" *ngIf="history().length">
+    <h3>{{ 'history' | translate }}</h3>
+    <div class="history-list">
+      <span *ngFor="let city of history()" class="history-item">
+        {{ city }}
+      </span>
+    </div>
+  </div>
+
+  <div *ngIf="weather() as w" class="weather-card">
+    <h2>
+      <a [routerLink]="['/city', w.name]">
+        {{ w.displayName || w.name }}
+      </a>
+    </h2>
+    <p>{{ 'temperature' | translate }}: {{ w.main.temp }} °{{ unit() === 'metric' ? 'C' : 'F' }}</p>
+    <p>{{ 'humidity' | translate }}: {{ w.main.humidity }} %</p>
+    <p>{{ 'weather' | translate }}: {{ w.weather[0].description }}</p>
+    <button (click)="addToFavorites()" class="fav-btn">{{ 'addFavorites' | translate }}</button>
+  </div>
+
+  <div *ngIf="forecast().length" class="forecast">
+    <h2>{{ 'forecast' | translate }}</h2>
+    <div class="forecast-grid">
+      <div class="forecast-card" *ngFor="let day of forecast()">
+        <p>{{ day.dt_txt | date : 'EEE, MMM d' }}</p>
+        <p>{{ day.main.temp }} °{{ unit() === 'metric' ? 'C' : 'F' }}</p>
+        <p>{{ day.weather[0].description }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="forecast().length" class="chart-container">
+    <h2>{{ 'temperatureChart' | translate }}</h2>
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [xaxis]="chartOptions.xaxis"
+    ></apx-chart>
+  </div>
+
+  <div class="favorites-section" *ngIf="displayCities.length > 0">
+    <div class="favorites-header">
+      <h2>
+        {{ 'favorites' | translate }}
+        <span class="role-badge" *ngIf="isAdmin">👑 {{ 'admin' | translate }}</span>
+        <span class="role-badge" *ngIf="!isAdmin">👤 {{ 'user' | translate }}</span>
+      </h2>
+
+      <div class="favorites-controls">
+        <div class="sort-buttons">
+          <button
+            [class.active]="currentSortOrder === 'desc'"
+            (click)="setSortOrder('desc')"
+            [title]="'warmestFirst' | translate"
+          >
+            🌡️ ↓
+          </button>
+          <button
+            [class.active]="currentSortOrder === 'asc'"
+            (click)="setSortOrder('asc')"
+            [title]="'coldestFirst' | translate"
+          >
+            🌡️ ↑
+          </button>
+        </div>
+        <div class="group-toggle">
+          <button [class.active]="currentGroupBy === 'none'" (click)="setGroupBy('none')">
+            📋 {{ 'list' | translate }}
+          </button>
+          <button [class.active]="currentGroupBy === 'country'" (click)="setGroupBy('country')">
+            🌍 {{ 'byCountry' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="currentGroupBy === 'none'" class="favorite-grid">
+      <div class="favorite-card" *ngFor="let city of displayCities" [class.pinned]="city.isPinned">
+        <div class="city-info">
+          <span class="city-name">{{ city.name }}</span>
+          <span class="city-temp"
+            >{{ convertTemperature(city.temp) }}°{{ unit() === 'metric' ? 'C' : 'F' }}</span
+          >
+          <span *ngIf="city.country" class="city-country">{{ city.country }}</span>
+        </div>
+        <div class="card-actions">
+          <ng-container *ngIf="isAdmin">
+            <button
+              *ngIf="!city.isPinned"
+              (click)="pinCity(city)"
+              class="pin-btn"
+              [title]="'pin' | translate"
+            >
+              📌
+            </button>
+            <button
+              *ngIf="city.isPinned"
+              (click)="unpinCity(city.name)"
+              class="unpin-btn"
+              [title]="'unpin' | translate"
+            >
+              📌
+            </button>
+          </ng-container>
+          <button
+            *ngIf="!city.isPinned"
+            (click)="removeFavorite(city.name)"
+            class="remove-btn"
+            [title]="'remove' | translate"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <ng-container *ngIf="currentGroupBy === 'country'">
+      <div *ngFor="let group of groupedFavorites | keyvalue" class="favorite-group">
+        <h3>{{ group.key }}</h3>
+        <div class="favorite-grid">
+          <div
+            class="favorite-card"
+            *ngFor="let city of group.value"
+            [class.pinned]="city.isPinned"
+          >
+            <div class="city-info">
+              <span class="city-name">{{ city.name }}</span>
+              <span class="city-temp"
+                >{{ convertTemperature(city.temp) }}°{{ unit() === 'metric' ? 'C' : 'F' }}</span
+              >
+              <span *ngIf="city.country" class="city-country">{{ city.country }}</span>
+            </div>
+            <div class="card-actions">
+              <ng-container *ngIf="isAdmin">
+                <button
+                  *ngIf="!city.isPinned"
+                  (click)="pinCity(city)"
+                  class="pin-btn"
+                  [title]="'pin' | translate"
+                >
+                  📌
+                </button>
+                <button
+                  *ngIf="city.isPinned"
+                  (click)="unpinCity(city.name)"
+                  class="unpin-btn"
+                  [title]="'unpin' | translate"
+                >
+                  📌
+                </button>
+              </ng-container>
+              <button
+                *ngIf="!city.isPinned"
+                (click)="removeFavorite(city.name)"
+                class="remove-btn"
+                [title]="'remove' | translate"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

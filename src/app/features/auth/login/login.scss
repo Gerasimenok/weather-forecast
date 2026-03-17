@@ -1,0 +1,110 @@
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-sizing: border-box;
+  
+    h1 {
+      color: white;
+      margin-bottom: 30px;
+      font-size: 2.5rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+  
+    form {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+  
+      input {
+        width: 100%;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        box-sizing: border-box;
+        transition: border-color 0.3s;
+  
+        &:focus {
+          outline: none;
+          border-color: #667eea;
+        }
+  
+        &.ng-invalid.ng-touched {
+          border-color: #ff4757;
+        }
+      }
+  
+      button {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s;
+  
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+  
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
+        }
+      }
+    }
+  
+    .error {
+      color: #ff4757;
+      background: rgba(255, 71, 87, 0.1);
+      padding: 10px 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      font-weight: 500;
+    }
+  
+    a {
+      margin-top: 20px;
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      transition: opacity 0.3s;
+  
+      &:hover {
+        opacity: 0.8;
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .auth-container {
+      padding: 10px;
+  
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+      }
+  
+      form {
+        padding: 25px;
+      }
+    }
+  }

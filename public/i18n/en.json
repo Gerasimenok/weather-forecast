@@ -1,0 +1,79 @@
+{
+  "appName": "Weather App",
+  "home": "Home",
+  "settings": "Settings",
+  "logout": "Logout",
+  
+  "search": "Enter city name",
+  "showFilters": "Show filters",
+  "hideFilters": "Hide filters",
+  "country": "Country",
+  "region": "Region",
+  "population": "Population",
+  "min": "Min",
+  "max": "Max",
+  "any": "Any",
+  "foundCities": "Found {{count}} cities",
+  "noCitiesFound": "No cities found matching your criteria",
+  
+  "temperature": "Temperature",
+  "humidity": "Humidity",
+  "weather": "Weather",
+  "feelsLike": "Feels like",
+  "pressure": "Pressure",
+  "wind": "Wind",
+  "sunrise": "Sunrise",
+  "sunset": "Sunset",
+  "addToFavorites": "Add to favorites",
+  
+  "forecast": "5 Day Forecast",
+  "temperatureChart": "Temperature Chart",
+  "weatherHistory": "Weather History (Last 7 Days)",
+  
+  "favorites": "Favorite Cities",
+  "pinnedCities": "Pinned Cities (visible to all)",
+  "remove": "Remove",
+  "pin": "Pin for all users",
+  "unpin": "Unpin",
+  
+  "sortBy": "Sort by",
+  "warmestFirst": "Warmest first",
+  "coldestFirst": "Coldest first",
+  "groupBy": "Group by",
+  "list": "List",
+  "byCountry": "By country",
+  
+  "compare": "Compare Cities",
+  "selectCities": "Select up to 3 cities to compare",
+  "addCity": "Add city",
+  "clearAll": "Clear all",
+  
+  "history": "Recent Searches",
+  
+  "cityWeather": "City Weather",
+  "loading": "Loading weather data...",
+  "goBack": "Go back",
+  "cityNotFound": "City not found",
+  "errorLoading": "Error loading data",
+  
+  "defaultCity": "Default City",
+  "enterCity": "Enter city name",
+  "currentDefault": "Current default city",
+  "clear": "Clear",
+  
+  "weatherBackground": "Weather-based Background",
+  "dynamicBackground": "Change background based on weather",
+  "backgroundHint": "Background color will change according to current weather (sunny, rainy, cloudy, etc.)",
+  
+  "temperatureUnit": "Temperature Unit",
+  "celsius": "Celsius",
+  "fahrenheit": "Fahrenheit",
+  "theme": "Theme",
+  "light": "Light",
+  "dark": "Dark",
+  "language": "Language",
+  
+  "admin": "Admin",
+  "user": "User"
+  
+}

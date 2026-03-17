@@ -1,0 +1,11 @@
+<nav class="navbar">
+  <div class="nav-brand">
+    <a routerLink="/dashboard">🌤️ WeatherApp</a>
+  </div>
+
+  <div class="nav-links">
+    <a routerLink="/dashboard" routerLinkActive="active"> {{ 'home' | translate }} </a>
+    <a routerLink="/settings" routerLinkActive="active"> {{ 'settings' | translate }} </a>
+    <button class="nav-logout" (click)="logout()">{{ 'logout' | translate }}</button>
+  </div>
+</nav>

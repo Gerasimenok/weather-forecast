@@ -1,0 +1,42 @@
+.admin-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background: var(--card-bg, #f5f5f5);
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  .warning {
+    color: #dc3545;
+    margin: 20px 0;
+  }
+  
+  .user-info {
+    margin: 20px 0;
+    
+    p {
+      margin: 10px 0;
+    }
+  }
+  
+  .admin-btn {
+    background: gold;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 20px 0;
+    
+    &:hover {
+      background: #ffd700;
+      transform: scale(1.05);
+    }
+  }
+  
+  .success {
+    color: #28a745;
+    font-weight: bold;
+  }

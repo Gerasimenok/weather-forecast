@@ -1,0 +1,23 @@
+<div class="admin-container">
+  <h2>Make yourself admin</h2>
+
+  <div *ngIf="!currentUser" class="warning">
+    You need to be logged in first!
+    <a routerLink="/login">Go to Login</a>
+  </div>
+
+  <div *ngIf="currentUser" class="user-info">
+    <p>
+      Current user: <strong>{{ currentUser.email }}</strong>
+    </p>
+    <p>
+      Current role: <strong>{{ currentUser.role }}</strong>
+    </p>
+
+    <button *ngIf="currentUser.role !== 'admin'" (click)="makeAdmin()" class="admin-btn">
+      👑 Make me Admin
+    </button>
+
+    <p *ngIf="currentUser.role === 'admin'" class="success">You are already admin!</p>
+  </div>
+</div>

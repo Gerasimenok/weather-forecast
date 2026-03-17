@@ -1,0 +1,79 @@
+<div class="city-container">
+  <h1>{{ 'cityWeather' | translate }}</h1>
+
+  <div *ngIf="loading()" class="loading">
+    <div class="spinner"></div>
+    <p>Loading weather data...</p>
+  </div>
+
+  <div *ngIf="error()" class="error">
+    {{ error() }}
+    <a routerLink="/dashboard">Go back</a>
+  </div>
+
+  <div *ngIf="weather() as w" class="weather-details">
+    <h2>{{ w.name }}, {{ w.sys?.country }}</h2>
+
+    <div class="current-weather">
+      <img
+        [src]="'https://openweathermap.org/img/wn/' + w.weather[0].icon + '@2x.png'"
+        alt="weather icon"
+      />
+
+      <div class="temperature">
+        {{ w.main.temp | number : '1.0-0' }} °{{ unit() === 'metric' ? 'C' : 'F' }}
+      </div>
+
+      <div class="description">
+        {{ w.weather[0].description }}
+      </div>
+
+      <div class="details">
+        <p>
+          <strong>{{ 'humidity' | translate }}:</strong> {{ w.main.humidity }}%
+        </p>
+        <p>
+          <strong>{{ 'pressure' | translate }}:</strong> {{ w.main.pressure }} hPa
+        </p>
+        <p>
+          <strong>{{ 'wind' | translate }}:</strong> {{ w.wind.speed }} m/s
+        </p>
+        <p>
+          <strong>{{ 'sunrise' | translate }}:</strong> {{ w.sys?.sunrise * 1000 | date : 'HH:mm' }}
+        </p>
+        <p>
+          <strong>{{ 'sunset' | translate }}:</strong> {{ w.sys?.sunset * 1000 | date : 'HH:mm' }}
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="historicalData().length" class="historical-chart">
+      <h3>{{ 'weatherHistory' | translate }}</h3>
+      <apx-chart
+        [series]="historicalChartOptions.series"
+        [chart]="historicalChartOptions.chart"
+        [xaxis]="historicalChartOptions.xaxis"
+        [stroke]="historicalChartOptions.stroke"
+        [colors]="historicalChartOptions.colors"
+        [title]="historicalChartOptions.title"
+      ></apx-chart>
+    </div>
+
+    <div *ngIf="forecast().length" class="forecast">
+      <h3>5 Day Forecast</h3>
+      <div class="forecast-grid">
+        <div class="forecast-card" *ngFor="let day of forecast()">
+          <p class="date">{{ day.dt_txt | date : 'EEE, MMM d' }}</p>
+          <img
+            [src]="'https://openweathermap.org/img/wn/' + day.weather[0].icon + '@2x.png'"
+            alt="weather icon"
+          />
+          <p class="temp">
+            {{ day.main.temp | number : '1.0-0' }} °{{ unit() === 'metric' ? 'C' : 'F' }}
+          </p>
+          <p class="desc">{{ day.weather[0].description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

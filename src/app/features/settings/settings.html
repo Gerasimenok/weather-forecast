@@ -1,0 +1,91 @@
+<div class="settings-container">
+  <h1>{{ 'settings' | translate }}</h1>
+
+  <div class="settings-section">
+    <h2>{{ 'defaultCity' | translate }}</h2>
+    <div class="city-selector">
+      <input
+        type="text"
+        [(ngModel)]="defaultCityInput"
+        (input)="searchCity()"
+        [placeholder]="'enterCity' | translate"
+        class="city-input"
+      />
+
+      <ul *ngIf="suggestions().length" class="suggestions">
+        <li *ngFor="let city of suggestions()" (click)="selectCity(city)">
+          {{ city.name }}, {{ city.country }}
+        </li>
+      </ul>
+    </div>
+
+    <div *ngIf="defaultCity()" class="current-default">
+      {{ 'currentDefault' | translate }}: <strong>{{ defaultCity() }}</strong>
+      <button (click)="clearDefaultCity()" class="clear-btn">✕</button>
+    </div>
+  </div>
+
+  <div class="settings-section">
+    <h2>{{ 'weatherBackground' | translate }}</h2>
+    <div class="toggle-switch">
+      <label class="switch">
+        <input
+          type="checkbox"
+          [checked]="weatherBackground()"
+          (change)="toggleWeatherBackground()"
+        />
+        <span class="slider round"></span>
+      </label>
+      <span>{{ 'dynamicBackground' | translate }}</span>
+    </div>
+    <p class="hint">{{ 'backgroundHint' | translate }}</p>
+  </div>
+
+  <div class="settings-section">
+    <h2>{{ 'temperatureUnit' | translate }}</h2>
+    <div class="settings-options">
+      <button class="settings-btn" [class.active]="unit() === 'metric'" (click)="setUnit('metric')">
+        °C {{ 'celsius' | translate }}
+      </button>
+      <button
+        class="settings-btn"
+        [class.active]="unit() === 'imperial'"
+        (click)="setUnit('imperial')"
+      >
+        °F {{ 'fahrenheit' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div class="settings-section">
+    <h2>{{ 'theme' | translate }}</h2>
+    <div class="settings-options">
+      <button class="settings-btn" [class.active]="theme() === 'light'" (click)="toggleTheme()">
+        ☀️ {{ 'light' | translate }}
+      </button>
+      <button class="settings-btn" [class.active]="theme() === 'dark'" (click)="toggleTheme()">
+        🌙 {{ 'dark' | translate }}
+      </button>
+    </div>
+  </div>
+
+  <div class="settings-section">
+    <h2>{{ 'language' | translate }}</h2>
+    <div class="settings-options">
+      <button
+        class="settings-btn"
+        [class.active]="currentLang() === 'en'"
+        (click)="setLanguage('en')"
+      >
+        🇬🇧 English
+      </button>
+      <button
+        class="settings-btn"
+        [class.active]="currentLang() === 'ru'"
+        (click)="setLanguage('ru')"
+      >
+        🇷🇺 Русский
+      </button>
+    </div>
+  </div>
+</div>

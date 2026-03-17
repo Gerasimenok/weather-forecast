@@ -1,1 +1,70 @@
-/* You can add global styles to this file, and also import other style files */
+body.light-theme {
+
+    background: #ffffff;
+    color: #000;
+  
+  }
+  
+  body.dark-theme {
+  
+    background: #1e1e1e;
+    color: #ffffff;
+  
+  }
+  
+  .dark-theme .weather-card,
+  .dark-theme .forecast-card,
+  .dark-theme .favorite-card {
+  
+    background: #2a2a2a;
+    border-color: #444;
+  
+  }
+
+.apexcharts-canvas {
+  touch-action: auto !important;
+  
+  * {
+    touch-action: auto !important;
+  }
+}
+
+.sunny-bg {
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+}
+
+.rainy-bg {
+  background: linear-gradient(135deg, #616161 0%, #9bc5c3 100%);
+}
+
+.cloudy-bg {
+  background: linear-gradient(135deg, #757f9a 0%, #d7dde8 100%);
+}
+
+.snowy-bg {
+  background: linear-gradient(135deg, #e6e9f0 0%, #eef1f5 100%);
+}
+
+.storm-bg {
+  background: linear-gradient(135deg, #373b44 0%, #4286f4 100%);
+}
+
+.foggy-bg {
+  background: linear-gradient(135deg, #606c88 0%, #3f4c6b 100%);
+}
+
+.default-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+body.dark-theme {
+  &.sunny-bg {
+    background: linear-gradient(135deg, #d4a373 0%, #b5838d 100%);
+  }
+  &.rainy-bg {
+    background: linear-gradient(135deg, #2d3e4f 0%, #1e2a3a 100%);
+  }
+  &.cloudy-bg {
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  }
+}
